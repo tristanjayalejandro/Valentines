@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can I court you? 💖</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:system-ui, sans-serif;
+  background:linear-gradient(135deg,#fff0f6,#eef2ff);
+  overflow-x:hidden;
+}
+
+.card{
+  background:white;
+  padding:4vw; /* responsive padding */
+  border-radius:2vw;
+  text-align:center;
+  width:90%;
+  max-width:650px;
+  box-shadow:0 4vw 10vw rgba(0,0,0,.15);
+  z-index:10;
+}
+
+.question-container{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4vw;
+  flex-wrap:wrap;
+}
+
+.question-container h1{
+  font-size:5vw; /* responsive text */
+  margin:0;
+}
+
+.question-container img{
+  width:30vw;   /* responsive image */
+  max-width:200px;
+  height:auto;
+  border-radius:2vw;
+}
+
+.buttons{
+  display:flex;
+  gap:4vw;
+  justify-content:center;
+  margin-top:4vw;
+  flex-wrap:wrap;
+}
+
+button{
+  padding:3vw 6vw; /* responsive padding */
+  border-radius:2vw;
+  font-size:4vw; /* responsive font */
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:transform 0.35s ease, opacity 0.35s ease;
+  min-width:30%;
+}
+
+.yes{
+  background:#ff4f8b;
+  color:white;
+  z-index:3;
+}
+
+.no{
+  background:#e5e7eb;
+  z-index:2;
+}
+
+.msg{
+  margin-top:2vw;
+  font-size:4vw;
+  color:#6b7280;
+  word-break:break-word;
+}
+
+/* MEMES */
+.meme{
+  position:fixed;
+  max-width:40vw;
+  width:200px;
+  animation:pop .3s ease forwards;
+  z-index:1;
+}
+
+@keyframes pop{
+  from{transform:scale(0);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* FINAL IMAGE */
+.final-img{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:80vw;
+  max-width:1500px;
+  max-height:80vh;
+  border-radius:2vw;
+  z-index:80;
+  box-shadow:0 3vw 8vw rgba(0,0,0,.25);
+}
+
+/* MOBILE ADJUSTMENTS */
+@media(max-width:480px){
+  .question-container h1{
+    font-size:6vw;
+  }
+  button{
+    font-size:5vw;
+    padding:4vw 6vw;
+  }
+  .question-container img{
+    width:35vw;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <div class="question-container">
+    <h1 id="question">Hii mich! pwede ko ikaw magin ka valentines?💕</h1>
+    <img src="pusa.jpg" alt="funny cat">
+  </div>
+  <div class="buttons">
+    <button class="yes" id="yesBtn">Yes 💖</button>
+    <button class="no" id="noBtn">No 😅</button>
+  </div>
+  <div class="msg" id="msg"></div>
+</div>
+
+<audio id="sadSound" src="sadmusic.mp3" preload="auto"></audio>
+<audio id="happySound" src="romanceeeeeeeeeeeeee.mp3" preload="auto"></audio>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const msg = document.getElementById("msg");
+const card = document.getElementById("card");
+const questionEl = document.getElementById("question");
+const sadSound = document.getElementById("sadSound");
+const happySound = document.getElementById("happySound");
+
+let yesScale = 1;
+let noScale = 1;
+let clicks = 0;
+
+// Questions to beg when NO clicked
+const questions = [
+  "ahh mich ayaw mo???😢",
+  "totooo ayaw mo mich?? 🥺",
+  "Cgeh na mich wag kana mahiyaa 😭",
+  "may dala akong santol😔",
+  "oii favorite kong color violet😅",
+  "marunong ako magluto ng chapsuy💖",
+  "may extention nails ako dito😸",
+  "please??💗",
+  "cgeh dyan kana kay harve😏"
+];
+
+function playSound(sound){
+  sound.pause();
+  sound.currentTime = 0;
+  sound.play().catch(()=>{});
+}
+
+// Add memes
+function addSadMemes(count){
+  const src = [
+    "memes1.jpg",
+    "memes2.jpg",
+    "memes3.jpg",
+    "memes4.jpg",
+    "memes5.jpg",
+    "memes6.jpg",
+    "memes7.jpg",
+    "memes8.jpg",
+    "memes9.jpg",
+    "memes10.jpg"
+  ];
+
+  for(let i=0;i<count;i++){
+    const img = document.createElement("img");
+    img.src = src[Math.floor(Math.random()*src.length)];
+    img.className="meme";
+    img.style.width = (20 + Math.random()*40) + "vw"; // responsive random size
+    img.style.left=Math.random()*80+"vw";
+    img.style.top=Math.random()*70+"vh";
+    document.body.appendChild(img);
+  }
+}
+
+/* NO BUTTON */
+noBtn.addEventListener("click", ()=>{
+  playSound(sadSound);
+  clicks++;
+
+  // Update question each time NO clicked
+  questionEl.textContent = questions[clicks % questions.length];
+
+  yesScale += 0.2;
+  noScale -= 0.05;
+
+  if(noScale < 0.15){
+    noScale = 0.15;
+    noBtn.style.pointerEvents = "none";
+    noBtn.style.opacity = "0.4";
+    msg.textContent = "Aray moo!!!!";
+  } else {
+    msg.textContent = ":<";
+  }
+
+  yesBtn.style.transform = `scale(${yesScale})`;
+  noBtn.style.transform = `scale(${noScale})`;
+
+  addSadMemes(clicks * 2);
+});
+
+/* YES BUTTON */
+yesBtn.addEventListener("click", ()=>{
+  playSound(happySound);
+
+  document.querySelectorAll(".meme").forEach(m=>m.remove());
+  card.remove();
+
+  yesBtn.style.position="fixed";
+  yesBtn.style.top="0";
+  yesBtn.style.left="0";
+  yesBtn.style.width="100vw";
+  yesBtn.style.height="100vh";
+  yesBtn.style.borderRadius="0";
+  yesBtn.style.fontSize="10vw";
+  yesBtn.style.transform="none";
+  yesBtn.textContent="YES 💖 YES 💖 YES 💖";
+  document.body.appendChild(yesBtn);
+
+  const img = document.createElement("img");
+  img.src = "ako.jpg"; // final image
+  img.className = "final-img";
+  document.body.appendChild(img);
+});
+</script>
+
+</body>
+</html>

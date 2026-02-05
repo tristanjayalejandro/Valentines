@@ -19,11 +19,11 @@ body{
 
 .card{
   background:white;
-  padding:4vw; /* responsive padding */
+  padding:3vw; /* smaller padding for mobile */
   border-radius:2vw;
   text-align:center;
   width:90%;
-  max-width:650px;
+  max-width:500px; /* smaller card max width */
   box-shadow:0 4vw 10vw rgba(0,0,0,.15);
   z-index:10;
 }
@@ -32,39 +32,39 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:4vw;
+  gap:3vw;
   flex-wrap:wrap;
 }
 
 .question-container h1{
-  font-size:5vw; /* responsive text */
+  font-size:5vw;
   margin:0;
 }
 
 .question-container img{
-  width:30vw;   /* responsive image */
-  max-width:200px;
+  width:25vw;   /* smaller image on mobile */
+  max-width:150px;
   height:auto;
   border-radius:2vw;
 }
 
 .buttons{
   display:flex;
-  gap:4vw;
+  gap:3vw;
   justify-content:center;
-  margin-top:4vw;
+  margin-top:3vw;
   flex-wrap:wrap;
 }
 
 button{
-  padding:3vw 6vw; /* responsive padding */
+  padding:3vw 5vw;
   border-radius:2vw;
-  font-size:4vw; /* responsive font */
+  font-size:4vw;
   font-weight:700;
   border:none;
   cursor:pointer;
   transition:transform 0.35s ease, opacity 0.35s ease;
-  min-width:30%;
+  min-width:35%;
 }
 
 .yes{
@@ -88,8 +88,8 @@ button{
 /* MEMES */
 .meme{
   position:fixed;
-  max-width:40vw;
-  width:200px;
+  max-width:35vw; /* smaller memes for mobile */
+  width:180px;
   animation:pop .3s ease forwards;
   z-index:1;
 }
@@ -106,7 +106,7 @@ button{
   left:50%;
   transform:translate(-50%,-50%);
   width:80vw;
-  max-width:1500px;
+  max-width:1200px;
   max-height:80vh;
   border-radius:2vw;
   z-index:80;
@@ -115,15 +115,22 @@ button{
 
 /* MOBILE ADJUSTMENTS */
 @media(max-width:480px){
+  .card{
+    max-width:90%;  /* card smaller on tiny phones */
+    padding:4vw;
+  }
   .question-container h1{
     font-size:6vw;
   }
   button{
     font-size:5vw;
-    padding:4vw 6vw;
+    padding:4vw 5vw;
   }
   .question-container img{
     width:35vw;
+  }
+  .meme{
+    max-width:40vw;
   }
 }
 </style>
@@ -159,7 +166,6 @@ let yesScale = 1;
 let noScale = 1;
 let clicks = 0;
 
-// Questions to beg when NO clicked
 const questions = [
   "ahh mich ayaw mo???😢",
   "totooo ayaw mo mich?? 🥺",
@@ -178,7 +184,6 @@ function playSound(sound){
   sound.play().catch(()=>{});
 }
 
-// Add memes
 function addSadMemes(count){
   const src = [
     "memes1.jpg",
@@ -197,7 +202,7 @@ function addSadMemes(count){
     const img = document.createElement("img");
     img.src = src[Math.floor(Math.random()*src.length)];
     img.className="meme";
-    img.style.width = (20 + Math.random()*40) + "vw"; // responsive random size
+    img.style.width = (15 + Math.random()*25) + "vw"; // responsive random size
     img.style.left=Math.random()*80+"vw";
     img.style.top=Math.random()*70+"vh";
     document.body.appendChild(img);
@@ -209,7 +214,6 @@ noBtn.addEventListener("click", ()=>{
   playSound(sadSound);
   clicks++;
 
-  // Update question each time NO clicked
   questionEl.textContent = questions[clicks % questions.length];
 
   yesScale += 0.2;
@@ -219,7 +223,7 @@ noBtn.addEventListener("click", ()=>{
     noScale = 0.15;
     noBtn.style.pointerEvents = "none";
     noBtn.style.opacity = "0.4";
-    msg.textContent = "Aray moo!!!!";
+    msg.textContent = "arayy mooo";
   } else {
     msg.textContent = ":<";
   }

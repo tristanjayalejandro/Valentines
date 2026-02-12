@@ -14,16 +14,17 @@ body{
   justify-content:center;
   font-family:system-ui, sans-serif;
   background:linear-gradient(135deg,#fff0f6,#eef2ff);
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
+/* MAIN CARD */
 .card{
   background:white;
-  padding:3vw; /* smaller padding for mobile */
+  padding:3vw;
   border-radius:2vw;
   text-align:center;
   width:90%;
-  max-width:500px; /* smaller card max width */
+  max-width:450px;
   box-shadow:0 4vw 10vw rgba(0,0,0,.15);
   z-index:10;
 }
@@ -42,8 +43,8 @@ body{
 }
 
 .question-container img{
-  width:25vw;   /* smaller image on mobile */
-  max-width:150px;
+  width:30vw;
+  max-width:140px;
   height:auto;
   border-radius:2vw;
 }
@@ -64,7 +65,7 @@ button{
   border:none;
   cursor:pointer;
   transition:transform 0.35s ease, opacity 0.35s ease;
-  min-width:35%;
+  min-width:40%;
 }
 
 .yes{
@@ -88,10 +89,10 @@ button{
 /* MEMES */
 .meme{
   position:fixed;
-  max-width:35vw; /* smaller memes for mobile */
-  width:180px;
+  height:auto;
   animation:pop .3s ease forwards;
   z-index:1;
+  pointer-events:none;
 }
 
 @keyframes pop{
@@ -106,31 +107,21 @@ button{
   left:50%;
   transform:translate(-50%,-50%);
   width:80vw;
-  max-width:1200px;
+  max-width:900px;
   max-height:80vh;
   border-radius:2vw;
   z-index:80;
   box-shadow:0 3vw 8vw rgba(0,0,0,.25);
 }
 
-/* MOBILE ADJUSTMENTS */
+/* MOBILE */
 @media(max-width:480px){
-  .card{
-    max-width:90%;  /* card smaller on tiny phones */
-    padding:4vw;
-  }
   .question-container h1{
     font-size:6vw;
   }
   button{
     font-size:5vw;
     padding:4vw 5vw;
-  }
-  .question-container img{
-    width:35vw;
-  }
-  .meme{
-    max-width:40vw;
   }
 }
 </style>
@@ -140,13 +131,15 @@ button{
 
 <div class="card" id="card">
   <div class="question-container">
-    <h1 id="question">Hii mich! pwede ko ikaw magin ka valentines?💕</h1>
+    <h1 id="question">Hii mich! pwede ko ikaw maging valentines?💕</h1>
     <img src="pusa.jpg" alt="funny cat">
   </div>
+
   <div class="buttons">
     <button class="yes" id="yesBtn">Yes 💖</button>
     <button class="no" id="noBtn">No 😅</button>
   </div>
+
   <div class="msg" id="msg"></div>
 </div>
 
@@ -167,15 +160,15 @@ let noScale = 1;
 let clicks = 0;
 
 const questions = [
-  "ahh mich ayaw mo???😢",
-  "totooo ayaw mo mich?? 🥺",
+  "PLEASEEEEE???😢",
+  "PLSS PLSS PLSSS🥺",
   "Cgeh na mich wag kana mahiyaa 😭",
   "may dala akong santol😔",
-  "oii favorite kong color violet😅",
+  "oii favorite ko din color violet😅",
   "marunong ako magluto ng chapsuy💖",
   "may extention nails ako dito😸",
   "please??💗",
-  "cgeh dyan kana kay harve😏"
+  "cgeh naaaa plesssss"
 ];
 
 function playSound(sound){
@@ -184,6 +177,7 @@ function playSound(sound){
   sound.play().catch(()=>{});
 }
 
+/* SAFE MEME SYSTEM (ALWAYS FITS SCREEN) */
 function addSadMemes(count){
   const src = [
     "memes1.jpg",
@@ -202,9 +196,18 @@ function addSadMemes(count){
     const img = document.createElement("img");
     img.src = src[Math.floor(Math.random()*src.length)];
     img.className="meme";
-    img.style.width = (15 + Math.random()*25) + "vw"; // responsive random size
-    img.style.left=Math.random()*80+"vw";
-    img.style.top=Math.random()*70+"vh";
+
+    // Responsive meme size
+    const size = 18 + Math.random()*20; // 18vw - 38vw
+    img.style.width = size + "vw";
+
+    // Keep inside screen safely
+    const maxLeft = 100 - size;
+    const maxTop = 100 - size;
+
+    img.style.left = Math.random()*maxLeft + "vw";
+    img.style.top = Math.random()*maxTop + "vh";
+
     document.body.appendChild(img);
   }
 }
@@ -217,13 +220,13 @@ noBtn.addEventListener("click", ()=>{
   questionEl.textContent = questions[clicks % questions.length];
 
   yesScale += 0.2;
-  noScale -= 0.05;
+  noScale -= 0.07;
 
-  if(noScale < 0.15){
-    noScale = 0.15;
+  if(noScale < 0.1){
+    noScale = 0.1;
     noBtn.style.pointerEvents = "none";
-    noBtn.style.opacity = "0.4";
-    msg.textContent = "arayy mooo";
+    noBtn.style.opacity = "0.3";
+    msg.textContent = "arayy mooo 😭";
   } else {
     msg.textContent = ":<";
   }
@@ -250,11 +253,12 @@ yesBtn.addEventListener("click", ()=>{
   yesBtn.style.fontSize="10vw";
   yesBtn.style.transform="none";
   yesBtn.textContent="YES 💖 YES 💖 YES 💖";
+
   document.body.appendChild(yesBtn);
 
   const img = document.createElement("img");
-  img.src = "ako.jpg"; // final image
-  img.className = "final-img";
+  img.src = "ako.jpg";
+  img.className="final-img";
   document.body.appendChild(img);
 });
 </script>

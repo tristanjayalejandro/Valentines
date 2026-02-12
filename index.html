@@ -199,24 +199,34 @@ function addSadMemes(count){
   ];
 
   for(let i=0;i<count;i++){
+
     const img = document.createElement("img");
     img.src = src[Math.floor(Math.random()*src.length)];
     img.className="meme";
 
-    // Responsive meme size
-    const size = 18 + Math.random()*20; // 18vw - 38vw
+    // Meme size (responsive)
+    const size = 18 + Math.random()*18; // 18vw - 36vw
     img.style.width = size + "vw";
 
-    // Keep inside screen safely
-    const maxLeft = 100 - size;
-    const maxTop = 100 - size;
+    // Randomly choose TOP or BOTTOM zone
+    const placeTop = Math.random() < 0.5;
 
+    if(placeTop){
+      // TOP area (0vh to 20vh)
+      img.style.top = Math.random()*20 + "vh";
+    } else {
+      // BOTTOM area (80vh to 100vh minus size)
+      img.style.top = (80 + Math.random()*15) + "vh";
+    }
+
+    // Left stays full width but safe
+    const maxLeft = 100 - size;
     img.style.left = Math.random()*maxLeft + "vw";
-    img.style.top = Math.random()*maxTop + "vh";
 
     document.body.appendChild(img);
   }
 }
+
 
 /* NO BUTTON */
 noBtn.addEventListener("click", ()=>{
@@ -271,6 +281,7 @@ yesBtn.addEventListener("click", ()=>{
 
 </body>
 </html>
+
 
 
 

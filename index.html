@@ -91,9 +91,10 @@ button{
   position:fixed;
   height:auto;
   animation:pop .3s ease forwards;
-  z-index:1;
+  z-index:50; /* higher than card */
   pointer-events:none;
 }
+
 
 @keyframes pop{
   from{transform:scale(0);opacity:0}
@@ -265,5 +266,6 @@ yesBtn.addEventListener("click", ()=>{
 
 </body>
 </html>
+
 
 
